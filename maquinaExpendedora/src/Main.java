@@ -31,6 +31,7 @@ public class Main {
                 monedaIngresada = scanner.nextByte();
             }catch (InputMismatchException ex){
                 System.out.println("Valor inválido, por favor ingrese un nuevo valor.");
+                scanner.next();
             }
 
             byte moneda = validar_moneda(monedaIngresada, scanner);
@@ -57,6 +58,7 @@ public class Main {
                 monedaIngresada = scanner.nextByte();
             } catch (InputMismatchException ex){
                 System.out.println("Entrada invalida. Digite un número válido.");
+                scanner.next();
             }
         }
         return monedaIngresada;
