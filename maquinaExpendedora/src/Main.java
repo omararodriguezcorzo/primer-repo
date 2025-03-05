@@ -1,41 +1,49 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("MAQUINA EXPENDEDORA");
-        System.out.println("Bebidas disponibles:\n1. Agua (1 euro).\n2. Refresco (2 euros).\n3. Jugo (2 euros).\n");
-        byte bebidaEscogida = scanner.nextByte();
+        byte bebidaEscogida = 0;
+        do {
+            System.out.println("MAQUINA EXPENDEDORA");
+            System.out.println("Bebidas disponibles:\n1. Agua (1 euro).\n2. Refresco (2 euros).\n3. Jugo (2 euros).");
+            try{
+                bebidaEscogida = scanner.nextByte();
+            } catch (InputMismatchException ex) {
+                System.out.println("Digite un número válido entre 1 y 3. Vuelve a intentarlo.\n");
+                scanner.next();
+            }
+        } while (bebidaEscogida < 1 || bebidaEscogida > 3);
 
-        byte precio = 0;
-        switch (bebidaEscogida){
-            case 1:
-                precio = 1;
-                break;
-            case 2, 3:
-                precio = 2;
-                break;
-            default:
-                System.out.println("Bebida no válida");
-        }
-        System.out.println("El precio es: " + precio + "euro(s).");
+        byte precio = switch (bebidaEscogida) {
+            case 1 -> 1;
+            case 2, 3 -> 2;
+            default -> 0;
+        };
 
         byte totalIngresado = 0;
         while (totalIngresado < precio){
-            System.out.println("Ingrese otra moneda: ");
-            byte monedaIngresada = scanner.nextByte();
+            System.out.println("Ingrese una moneda: ");
+            byte monedaIngresada = 0;
+            try {
+                monedaIngresada = scanner.nextByte();
+            }catch (InputMismatchException ex){
+                System.out.println("Valor inválido, por favor ingrese un nuevo valor.");
+            }
+
             byte moneda = validar_moneda(monedaIngresada, scanner);
 
             totalIngresado += moneda;
             if (totalIngresado < precio){
                 System.out.println("No alcanza ingrese otra moneda.");
-                continue;
-            }
-            if (totalIngresado > precio){
-                byte vueltos = (byte) (totalIngresado - precio);
-                System.out.println("Sus vueltos son: " + vueltos + "euro(s).");
-                break;
+            }else {
+                if (totalIngresado > precio){
+                    byte vueltos = (byte) (totalIngresado - precio);
+                    System.out.println("Sus vueltos son: " + vueltos + "euro(s).");
+                    break;
+                }
             }
         }
         System.out.println("Gracias por su compra");
@@ -43,23 +51,12 @@ public class Main {
 
     //Valida la moneda sea de 1 - 2 euros
     static byte validar_moneda(byte monedaIngresada, Scanner scanner){
-        byte intentos = 0;
         while (monedaIngresada < 1 || monedaIngresada > 2){
             System.out.println("El valor de la moneda debe ser 1 uero o 2 euros.\nIngrese otra: ");
-            monedaIngresada = scanner.nextByte();
-
-            intentos++;
-            if (intentos == 3){
-                System.out.println("Quiere cancelar la compra: \nPresione s (sí)/n (no)");
-                char salirDelPrograma = scanner.next().charAt(0);
-
-                if (salirDelPrograma == 's'){
-                    System.out.println("Gracias por usar el programa. Hasta luego.");
-                    break;
-                }else {
-                    intentos = 0;
-                    continue;
-                }
+            try {
+                monedaIngresada = scanner.nextByte();
+            } catch (InputMismatchException ex){
+                System.out.println("Entrada invalida. Digite un número válido.");
             }
         }
         return monedaIngresada;
