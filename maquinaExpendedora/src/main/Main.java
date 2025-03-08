@@ -1,3 +1,5 @@
+package main;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -42,7 +44,7 @@ public class Main {
             }else {
                 if (totalIngresado > precio){
                     byte vueltos = (byte) (totalIngresado - precio);
-                    System.out.println("Sus vueltos son: " + vueltos + "euro(s).");
+                    System.out.println("Sus vueltos son: " + vueltos + " euro(s).");
                     break;
                 }
             }
